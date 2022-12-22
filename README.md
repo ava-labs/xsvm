@@ -43,7 +43,7 @@ Currently there are no fees enforced in the XSVM.
 ```bash
 git clone https://github.com/ava-labs/xsvm.git;
 cd xsvm;
-go install -v ./cmd/xsvm;
+go install -v ./cmd;
 ```
 
 #### Usage
