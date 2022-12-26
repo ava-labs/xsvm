@@ -43,21 +43,24 @@ Currently there are no fees enforced in the XSVM.
 ```bash
 git clone https://github.com/ava-labs/xsvm.git;
 cd xsvm;
-go install -v ./cmd;
+go install -v ./cmd/xsvm;
 ```
 
 #### Usage
 
 ```
-XSVM agent
+Runs an XSVM plugin
 
 Usage:
   xsvm [flags]
   xsvm [command]
 
 Available Commands:
+  account     Displays the state of the requested account
+  chain       Manages XS chains
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
+  issue       Issues transactions
   version     Prints out the version
 
 Flags:

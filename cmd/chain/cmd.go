@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/ava-labs/xsvm/cmd/chain/create"
+	"github.com/ava-labs/xsvm/cmd/chain/genesis"
 )
 
 func Command() *cobra.Command {
@@ -16,6 +17,7 @@ func Command() *cobra.Command {
 	}
 	c.AddCommand(
 		create.Command(),
+		genesis.Command(),
 	)
 	return c
 }

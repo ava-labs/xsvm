@@ -13,7 +13,7 @@ import (
 
 func Command() *cobra.Command {
 	return &cobra.Command{
-		Use:   "run",
+		Use:   "xsvm",
 		Short: "Runs an XSVM plugin",
 		RunE:  runFunc,
 	}

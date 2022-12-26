@@ -16,5 +16,5 @@ name="v3m4wPxaHpvGr8qfMeyK6PRW3idZrPHmYcMTt7oXdK47yurVH"
 mkdir -p ./build
 
 echo "Building xsvm into ./build/"
-go build -o ./build/$name ./cmd/
-go build -o ./build/xsvm ./cmd/
+go build -o ./build/$name ./cmd/xsvm/
+go build -o ./build/xsvm ./cmd/xsvm/
