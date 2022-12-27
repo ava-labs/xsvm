@@ -4,6 +4,7 @@
 package genesis
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/ava-labs/avalanchego/utils/formatting"
@@ -44,7 +45,7 @@ func genesisFunc(c *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	_, err = os.Stdout.WriteString(encoded)
+	_, err = fmt.Println(encoded)
 
 	return err
 }
