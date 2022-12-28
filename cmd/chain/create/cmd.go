@@ -41,7 +41,7 @@ func createFunc(c *cobra.Command, args []string) error {
 	// NewWalletFromURI fetches the available UTXOs owned by [kc] on the network
 	// that [uri] is hosting.
 	walletSyncStartTime := time.Now()
-	wallet, err := primary.NewWalletFromURI(ctx, config.URI, kc)
+	wallet, err := primary.NewWalletWithTxs(ctx, config.URI, kc, config.SubnetID)
 	if err != nil {
 		return err
 	}
