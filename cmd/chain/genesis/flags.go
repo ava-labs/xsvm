@@ -4,6 +4,7 @@
 package genesis
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -16,22 +17,28 @@ import (
 )
 
 const (
-	TimeKey    = "time"
-	AddressKey = "address"
-	BalanceKey = "balance"
+	TimeKey     = "time"
+	AddressKey  = "address"
+	BalanceKey  = "balance"
+	EncodingKey = "encoding"
+
+	binaryEncoding = "binary"
+	hexEncoding    = "hex"
 )
 
 func AddFlags(flags *pflag.FlagSet) {
 	flags.Int64(TimeKey, time.Now().Unix(), "Unix timestamp to include in the genesis")
 	flags.String(AddressKey, genesis.EWOQKey.Address().String(), "Address to fund in the genesis")
 	flags.Uint64(BalanceKey, math.MaxUint64, "Amount to provide the funded address in the genesis")
+	flags.String(EncodingKey, hexEncoding, fmt.Sprintf("Encoding to use for the genesis. Available values: %s or %s", hexEncoding, binaryEncoding))
 }
 
-func ParseFlags(flags *pflag.FlagSet, args []string) (*xsgenesis.Genesis, error) {
-	if err := flags.Parse(args); err != nil {
-		return nil, err
-	}
+type Config struct {
+	Genesis  *xsgenesis.Genesis
+	Encoding string
+}
 
+func ParseFlags(flags *pflag.FlagSet, args []string) (*Config, error) {
 	if err := flags.Parse(args); err != nil {
 		return nil, err
 	}
@@ -56,13 +63,21 @@ func ParseFlags(flags *pflag.FlagSet, args []string) (*xsgenesis.Genesis, error)
 		return nil, err
 	}
 
-	return &xsgenesis.Genesis{
-		Timestamp: timestamp,
-		Allocations: []xsgenesis.Allocation{
-			{
-				Address: addr,
-				Balance: balance,
+	encoding, err := flags.GetString(EncodingKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Config{
+		Genesis: &xsgenesis.Genesis{
+			Timestamp: timestamp,
+			Allocations: []xsgenesis.Allocation{
+				{
+					Address: addr,
+					Balance: balance,
+				},
 			},
 		},
+		Encoding: encoding,
 	}, nil
 }
