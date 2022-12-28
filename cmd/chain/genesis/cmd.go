@@ -4,13 +4,18 @@
 package genesis
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
-	"github.com/ava-labs/avalanchego/utils/formatting"
-	"github.com/ava-labs/xsvm/genesis"
 	"github.com/spf13/cobra"
+
+	"github.com/ava-labs/avalanchego/utils/formatting"
+
+	"github.com/ava-labs/xsvm/genesis"
 )
+
+var errUnknownEncoding = errors.New("unknown encoding")
 
 func Command() *cobra.Command {
 	c := &cobra.Command{
@@ -35,17 +40,18 @@ func genesisFunc(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	if config.Encoding == binaryEncoding {
+	switch config.Encoding {
+	case binaryEncoding:
 		_, err = os.Stdout.Write(genesisBytes)
 		return err
-	}
-
-	// hex encoded
-	encoded, err := formatting.Encode(formatting.Hex, genesisBytes)
-	if err != nil {
+	case hexEncoding:
+		encoded, err := formatting.Encode(formatting.Hex, genesisBytes)
+		if err != nil {
+			return err
+		}
+		_, err = fmt.Println(encoded)
 		return err
+	default:
+		return fmt.Errorf("%w: %q", errUnknownEncoding, config.Encoding)
 	}
-	_, err = fmt.Println(encoded)
-
-	return err
 }
