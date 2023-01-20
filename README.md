@@ -287,6 +287,8 @@ You can do this by following the [subnet tutorial] or by using the [subnet-cli].
 [C-Chain]: https://docs.avax.network/learn/platform-overview/#contract-chain-c-chain
 [Subnet]: https://docs.avax.network/learn/platform-overview/#subnets
 
+
+
 # Cross Subnet Transaction Example
 
 The following example shows how to interact with XSVM to send and receive native assets across subnets.
@@ -326,9 +328,14 @@ The SubnetID and ChainIDs are stored in the sidecar.json files in your avalanche
 
     xsvm issue export --source-chain-id <SubnetA.BlockchainID> --amount 20000 --destination-chain-id <SubnetB.BlockchainID>
 
+Save the TX ID printed out by running the export command.
+
 **Issue Import TX from Subnet B**
 
-> Note: The import tx requires **snowman++** consensus to be activated on the importing chain. A chain requires ~3 transactions for snowman++ to start. 
-> Run `xsvm issue transfer --amount 1000 --chain-id <SubnetB.BlockchainID>` to issue simple TXs on SubnetB
+> Note: The import tx requires **snowman++** consensus to be activated on the importing chain. A chain requires ~3 blocks to be produced for snowman++ to start. 
+> Run `xsvm issue transfer --chain-id <SubnetB.BlockchainID> --amount 1000`  to issue simple TXs on SubnetB
 
-**Issue Import TX from SubnetB**
+    xsvm issue import --source-chain-id <SubnetB.BlockchainID> --destination-chain-id=<SubnetA.BlockchainID> --tx-id <export_TX_ID>
+
+**Account Values**
+
