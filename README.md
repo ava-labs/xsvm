@@ -300,3 +300,35 @@ The following example shows how to interact with XSVM to send and receive native
 
 > **Note:**  This demo requires [avalanche-cl](https://github.com/ava-labs/avalanche-cli)i version > 1.0.5, [xsvm](https://github.com/ava-labs/xsvm) version > 1.0.2 and [avalanche-network-runner](https://github.com/ava-labs/avalanche-network-runner) v1.3.5. 
 
+### Create and Deploy Subnet A, Subnet B
+Using the avalanche-cli, this step deploys two subnets running the XSVM. Subnet A will act as the sender in this demo, and Subnet B will act as the receiver.
+
+Steps
+
+Build the [XSVM](https://github.com/ava-labs/xsvm)
+
+**Create a genesis file**
+
+    xsvm chain genesis --encoding binary --balance 100000 > xsvm.genesis
+**Create Subnet A and Subnet B**
+
+    avalanche subnet create subnetA --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
+
+    avalanche subnet create subnetB --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
+   **Deploy Subnet A and Subnet B**
+
+    avalanche subnet deploy subnetA --local
+    avalanche subnet deploy subnetB --local
+
+**Issue Export TX from Subnet A** 
+
+The SubnetID and ChainIDs are stored in the sidecar.json files in your avalanche-cli directory. Typically this is located at $HOME/.avalanche/subnets/
+
+    xsvm issue export --source-chain-id <SubnetA.BlockchainID> --amount 20000 --destination-chain-id <SubnetB.BlockchainID>
+
+**Issue Import TX from Subnet B**
+
+> Note: The import tx requires **snowman++** consensus to be activated on the importing chain. A chain requires ~3 transactions for snowman++ to start. 
+> Run `xsvm issue transfer --amount 1000 --chain-id <SubnetB.BlockchainID>` to issue simple TXs on SubnetB
+
+**Issue Import TX from SubnetB**
