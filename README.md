@@ -286,3 +286,17 @@ You can do this by following the [subnet tutorial] or by using the [subnet-cli].
 [Coreth]: https://github.com/ava-labs/coreth
 [C-Chain]: https://docs.avax.network/learn/platform-overview/#contract-chain-c-chain
 [Subnet]: https://docs.avax.network/learn/platform-overview/#subnets
+
+# Cross Subnet Transaction Example
+
+The following example shows how to interact with XSVM to send and receive native assets across subnets.
+
+### Overview of Steps
+ 1. Create & deploy Subnet A
+ 2. Create  & deploy Subnet B
+ 3. Issue an **export** TX on Subnet A
+ 4. Issue an **import** TX on Subnet B
+ 5. Confirm TXs processed correctly
+
+> **Note:**  This demo requires [avalanche-cl](https://github.com/ava-labs/avalanche-cli)i version > 1.0.5, [xsvm](https://github.com/ava-labs/xsvm) version > 1.0.2 and [avalanche-network-runner](https://github.com/ava-labs/avalanche-network-runner) v1.3.5. 
+
