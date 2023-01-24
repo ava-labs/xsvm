@@ -1,4 +1,5 @@
 
+
 # Cross Subnet Virtual Machine (XSVM)
 
 Cross Subnet Asset Transfers README Overview
@@ -322,7 +323,7 @@ Build the [XSVM](https://github.com/ava-labs/xsvm)
 
 **Create a genesis file**
 
-    xsvm chain genesis --encoding binary --balance 100000 > xsvm.genesis
+    xsvm chain genesis --encoding binary > xsvm.genesis
 **Create Subnet A and Subnet B**
 
     avalanche subnet create subnetA --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
@@ -337,7 +338,7 @@ Build the [XSVM](https://github.com/ava-labs/xsvm)
 
 The SubnetID and ChainIDs are stored in the sidecar.json files in your avalanche-cli directory. Typically this is located at $HOME/.avalanche/subnets/
 
-    xsvm issue export --source-chain-id <SubnetA.BlockchainID> --amount 20000 --destination-chain-id <SubnetB.BlockchainID>
+    xsvm issue export --source-chain-id <SubnetA.BlockchainID> --amount <export_amount> --destination-chain-id <SubnetB.BlockchainID>
 
 Save the TX ID printed out by running the export command.
 
@@ -346,7 +347,18 @@ Save the TX ID printed out by running the export command.
 > Note: The import tx requires **snowman++** consensus to be activated on the importing chain. A chain requires ~3 blocks to be produced for snowman++ to start. 
 > Run `xsvm issue transfer --chain-id <SubnetB.BlockchainID> --amount 1000`  to issue simple TXs on SubnetB
 
-    xsvm issue import --source-chain-id <SubnetB.BlockchainID> --destination-chain-id=<SubnetA.BlockchainID> --tx-id <export_TX_ID>
+    xsvm issue import --source-chain-id <SubnetA.BlockchainID> --destination-chain-id=<SubnetB.BlockchainID> --tx-id <export_TX_ID> --source-uris=<source_uris>
+  > The <source_uris> can be found by running `avalanche network status`. The default URIs are 
+"http://localhost:9650,http://localhost:9652,http://localhost:9654,http://localhost:9656,http://localhost:9658"
 
 **Account Values**
+To check proper execution, use the `xsvm account` command to check balances.
 
+Verify the balance on SubnetA decreased by your export amount using
+
+ `xsvm account --chain-id <SubnetA.BlockchainID>`
+ 
+Now verify chain A's assets were successfully imported to SubnetB 
+
+ `xsvm account --chain-id <SubnetB.BlockchainID> --asset-id <SubnetA.BlockchainID>`
+ 
