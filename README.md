@@ -309,7 +309,7 @@ The following example shows how to interact with the XSVM to send and receive na
 4. Issue an **import** Tx on Subnet B
 5. Confirm Txs processed correctly
 
-> **Note:**  This demo requires [avalanche-cl](https://github.com/ava-labs/avalanche-cli)i version > 1.0.5, [xsvm](https://github.com/ava-labs/xsvm) version > 1.0.2 and [avalanche-network-runner](https://github.com/ava-labs/avalanche-network-runner) v1.3.5.
+> **Note:**  This demo requires [avalanche-cli](https://github.com/ava-labs/avalanche-cli) version > 1.0.5, [xsvm](https://github.com/ava-labs/xsvm) version > 1.0.2 and [avalanche-network-runner](https://github.com/ava-labs/avalanche-network-runner) v1.3.5.
 
 ### Create and Deploy Subnet A, Subnet B
 
