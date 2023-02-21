@@ -355,7 +355,7 @@ Save the TxID printed out by running the export command.
 > Run `xsvm issue transfer --chain-id <SubnetB.BlockchainID> --amount 1000`  to issue simple Txs on SubnetB
 
 ```bash
-xsvm issue import --source-chain-id <SubnetA.BlockchainID> --destination-chain-id=<SubnetB.BlockchainID> --tx-id <exportTxID> --source-uris=<source_uris>
+xsvm issue import --source-chain-id <SubnetA.BlockchainID> --destination-chain-id <SubnetB.BlockchainID> --tx-id <exportTxID> --source-uris <source_uris>
 ```
 
 > The <source_uris> can be found by running `avalanche network status`. The default URIs are
