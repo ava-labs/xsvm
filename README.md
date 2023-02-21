@@ -1,5 +1,3 @@
-
-
 # Cross Subnet Virtual Machine (XSVM)
 
 Cross Subnet Asset Transfers README Overview
@@ -299,56 +297,68 @@ You can do this by following the [subnet tutorial] or by using the [subnet-cli].
 [C-Chain]: https://docs.avax.network/learn/platform-overview/#contract-chain-c-chain
 [Subnet]: https://docs.avax.network/learn/platform-overview/#subnets
 
+## Cross Subnet Transaction Example
 
-
-# Cross Subnet Transaction Example
-
-The following example shows how to interact with XSVM to send and receive native assets across subnets.
+The following example shows how to interact with the XSVM to send and receive native assets across subnets.
 
 ### Overview of Steps
- 1. Create & deploy Subnet A
- 2. Create  & deploy Subnet B
- 3. Issue an **export** TX on Subnet A
- 4. Issue an **import** TX on Subnet B
- 5. Confirm TXs processed correctly
 
-> **Note:**  This demo requires [avalanche-cl](https://github.com/ava-labs/avalanche-cli)i version > 1.0.5, [xsvm](https://github.com/ava-labs/xsvm) version > 1.0.2 and [avalanche-network-runner](https://github.com/ava-labs/avalanche-network-runner) v1.3.5. 
+1. Create & deploy Subnet A
+2. Create  & deploy Subnet B
+3. Issue an **export** Tx on Subnet A
+4. Issue an **import** Tx on Subnet B
+5. Confirm Txs processed correctly
+
+> **Note:**  This demo requires [avalanche-cl](https://github.com/ava-labs/avalanche-cli)i version > 1.0.5, [xsvm](https://github.com/ava-labs/xsvm) version > 1.0.2 and [avalanche-network-runner](https://github.com/ava-labs/avalanche-network-runner) v1.3.5.
 
 ### Create and Deploy Subnet A, Subnet B
+
 Using the avalanche-cli, this step deploys two subnets running the XSVM. Subnet A will act as the sender in this demo, and Subnet B will act as the receiver.
 
 Steps
 
 Build the [XSVM](https://github.com/ava-labs/xsvm)
 
-**Create a genesis file**
+### Create a genesis file
 
-    xsvm chain genesis --encoding binary > xsvm.genesis
-**Create Subnet A and Subnet B**
+```bash
+xsvm chain genesis --encoding binary > xsvm.genesis
+```
 
-    avalanche subnet create subnetA --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
+### Create Subnet A and Subnet B
 
-    avalanche subnet create subnetB --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
-   **Deploy Subnet A and Subnet B**
+```bash
+avalanche subnet create subnetA --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
+avalanche subnet create subnetB --custom --genesis <path_to_genesis> --vm <path_to_vm_binary>
+```
 
-    avalanche subnet deploy subnetA --local
-    avalanche subnet deploy subnetB --local
+### Deploy Subnet A and Subnet B
 
-**Issue Export TX from Subnet A** 
+```bash
+avalanche subnet deploy subnetA --local
+avalanche subnet deploy subnetB --local
+```
+
+### Issue Export Tx from Subnet A
 
 The SubnetID and ChainIDs are stored in the sidecar.json files in your avalanche-cli directory. Typically this is located at $HOME/.avalanche/subnets/
 
-    xsvm issue export --source-chain-id <SubnetA.BlockchainID> --amount <export_amount> --destination-chain-id <SubnetB.BlockchainID>
+```bash
+xsvm issue export --source-chain-id <SubnetA.BlockchainID> --amount <export_amount> --destination-chain-id <SubnetB.BlockchainID>
+```
 
-Save the TX ID printed out by running the export command.
+Save the TxID printed out by running the export command.
 
-**Issue Import TX from Subnet B**
+### Issue Import Tx from Subnet B
 
-> Note: The import tx requires **snowman++** consensus to be activated on the importing chain. A chain requires ~3 blocks to be produced for snowman++ to start. 
-> Run `xsvm issue transfer --chain-id <SubnetB.BlockchainID> --amount 1000`  to issue simple TXs on SubnetB
+> Note: The import tx requires **snowman++** consensus to be activated on the importing chain. A chain requires ~3 blocks to be produced for snowman++ to start.
+> Run `xsvm issue transfer --chain-id <SubnetB.BlockchainID> --amount 1000`  to issue simple Txs on SubnetB
 
-    xsvm issue import --source-chain-id <SubnetA.BlockchainID> --destination-chain-id=<SubnetB.BlockchainID> --tx-id <export_TX_ID> --source-uris=<source_uris>
-  > The <source_uris> can be found by running `avalanche network status`. The default URIs are 
+```bash
+xsvm issue import --source-chain-id <SubnetA.BlockchainID> --destination-chain-id=<SubnetB.BlockchainID> --tx-id <exportTxID> --source-uris=<source_uris>
+```
+
+> The <source_uris> can be found by running `avalanche network status`. The default URIs are
 "http://localhost:9650,http://localhost:9652,http://localhost:9654,http://localhost:9656,http://localhost:9658"
 
 **Account Values**
@@ -356,9 +366,12 @@ To check proper execution, use the `xsvm account` command to check balances.
 
 Verify the balance on SubnetA decreased by your export amount using
 
- `xsvm account --chain-id <SubnetA.BlockchainID>`
- 
-Now verify chain A's assets were successfully imported to SubnetB 
+```bash
+xsvm account --chain-id <SubnetA.BlockchainID>
+```
 
- `xsvm account --chain-id <SubnetB.BlockchainID> --asset-id <SubnetA.BlockchainID>`
- 
+Now verify chain A's assets were successfully imported to SubnetB
+
+```bash
+xsvm account --chain-id <SubnetB.BlockchainID> --asset-id <SubnetA.BlockchainID>
+```
