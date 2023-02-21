@@ -6,17 +6,19 @@ package tx
 import (
 	"github.com/ava-labs/avalanchego/cache"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/crypto"
+	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
 	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
-var secp256k1r = crypto.FactorySECP256K1R{Cache: cache.LRU{
-	Size: 2048,
-}}
+var secp256k1r = secp256k1.Factory{
+	Cache: cache.LRU[ids.ID, *secp256k1.PublicKey]{
+		Size: 2048,
+	},
+}
 
 type Tx struct {
 	Unsigned  `serialize:"true" json:"unsigned"`
-	Signature [crypto.SECP256K1RSigLen]byte `serialize:"true" json:"signature"`
+	Signature [secp256k1.SignatureLen]byte `serialize:"true" json:"signature"`
 }
 
 func Parse(bytes []byte) (*Tx, error) {
@@ -25,7 +27,7 @@ func Parse(bytes []byte) (*Tx, error) {
 	return tx, err
 }
 
-func Sign(utx Unsigned, key *crypto.PrivateKeySECP256K1R) (*Tx, error) {
+func Sign(utx Unsigned, key *secp256k1.PrivateKey) (*Tx, error) {
 	unsignedBytes, err := Codec.Marshal(Version, &utx)
 	if err != nil {
 		return nil, err

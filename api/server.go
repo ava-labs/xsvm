@@ -9,7 +9,7 @@ import (
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/vms/platformvm/teleporter"
+	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 
 	"github.com/ava-labs/xsvm/block"
 	"github.com/ava-labs/xsvm/builder"
@@ -184,8 +184,8 @@ type MessageArgs struct {
 }
 
 type MessageReply struct {
-	Message   *teleporter.UnsignedMessage `json:"message"`
-	Signature []byte                      `json:"signature"`
+	Message   *warp.UnsignedMessage `json:"message"`
+	Signature []byte                `json:"signature"`
 }
 
 func (s *server) Message(_ *http.Request, args *MessageArgs, reply *MessageReply) error {
@@ -195,6 +195,6 @@ func (s *server) Message(_ *http.Request, args *MessageArgs, reply *MessageReply
 	}
 
 	reply.Message = message
-	reply.Signature, err = s.ctx.TeleporterSigner.Sign(message)
+	reply.Signature, err = s.ctx.WarpSigner.Sign(message)
 	return err
 }

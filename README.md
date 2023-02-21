@@ -19,7 +19,8 @@ Avalanche is a network composed of multiple sub-networks (called [subnets][Subne
 ## AvalancheGo Compatibility
 
 ```
-[v1.0.2] AvalancheGo@v1.9.6-v1.9.7
+[v1.0.3] AvalancheGo@v1.9.9
+[v1.0.2] AvalancheGo@v1.9.6-v1.9.8
 [v1.0.1] AvalancheGo@v1.9.5
 [v1.0.0] AvalancheGo@v1.9.5
 ```

@@ -8,12 +8,14 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/ava-labs/avalanchego/version"
 	"github.com/ava-labs/xsvm"
 )
 
 const format = `%s:
-  VMID:    %s
-  Version: %s
+  VMID:           %s
+  Version:        %s
+  Plugin Version: %d
 `
 
 func Command() *cobra.Command {
@@ -25,6 +27,12 @@ func Command() *cobra.Command {
 }
 
 func versionFunc(*cobra.Command, []string) error {
-	fmt.Printf(format, xsvm.Name, xsvm.ID, xsvm.Version)
+	fmt.Printf(
+		format,
+		xsvm.Name,
+		xsvm.ID,
+		xsvm.Version,
+		version.RPCChainVMProtocol,
+	)
 	return nil
 }
