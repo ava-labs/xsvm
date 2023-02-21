@@ -10,7 +10,7 @@ import (
 
 	"github.com/ava-labs/avalanchego/genesis"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/crypto"
+	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
 	"github.com/ava-labs/avalanchego/wallet/subnet/primary"
 )
 
@@ -38,7 +38,7 @@ type Config struct {
 	Address    ids.ShortID
 	Balance    uint64
 	Name       string
-	PrivateKey *crypto.PrivateKeySECP256K1R
+	PrivateKey *secp256k1.PrivateKey
 }
 
 func ParseFlags(flags *pflag.FlagSet, args []string) (*Config, error) {
@@ -90,7 +90,7 @@ func ParseFlags(flags *pflag.FlagSet, args []string) (*Config, error) {
 		return nil, err
 	}
 
-	var sk crypto.PrivateKeySECP256K1R
+	var sk secp256k1.PrivateKey
 	err = sk.UnmarshalText([]byte(`"` + skStr + `"`))
 	if err != nil {
 		return nil, err

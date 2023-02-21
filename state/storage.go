@@ -9,7 +9,7 @@ import (
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/math"
-	"github.com/ava-labs/avalanchego/vms/platformvm/teleporter"
+	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 )
 
 var (
@@ -184,16 +184,16 @@ func IncreaseLoan(db database.KeyValueReaderWriterDeleter, chainID ids.ID, amoun
 
 // Message state
 
-func GetMessage(db database.KeyValueReader, txID ids.ID) (*teleporter.UnsignedMessage, error) {
+func GetMessage(db database.KeyValueReader, txID ids.ID) (*warp.UnsignedMessage, error) {
 	key := Flatten(messagePrefix, txID[:])
 	bytes, err := db.Get(key)
 	if err != nil {
 		return nil, err
 	}
-	return teleporter.ParseUnsignedMessage(bytes)
+	return warp.ParseUnsignedMessage(bytes)
 }
 
-func SetMessage(db database.KeyValueWriter, txID ids.ID, message *teleporter.UnsignedMessage) error {
+func SetMessage(db database.KeyValueWriter, txID ids.ID, message *warp.UnsignedMessage) error {
 	key := Flatten(messagePrefix, txID[:])
 	bytes := message.Bytes()
 	return db.Put(key, bytes)

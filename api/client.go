@@ -10,7 +10,7 @@ import (
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/rpc"
-	"github.com/ava-labs/avalanchego/vms/platformvm/teleporter"
+	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 
 	"github.com/ava-labs/xsvm/block"
 	"github.com/ava-labs/xsvm/genesis"
@@ -61,7 +61,7 @@ type Client interface {
 		ctx context.Context,
 		txID ids.ID,
 		options ...rpc.Option,
-	) (*teleporter.UnsignedMessage, []byte, error)
+	) (*warp.UnsignedMessage, []byte, error)
 }
 
 func NewClient(uri, chain string) Client {
@@ -226,7 +226,7 @@ func (c *client) Message(
 	ctx context.Context,
 	txID ids.ID,
 	options ...rpc.Option,
-) (*teleporter.UnsignedMessage, []byte, error) {
+) (*warp.UnsignedMessage, []byte, error) {
 	resp := new(MessageReply)
 	err := c.req.SendRequest(
 		ctx,

@@ -13,7 +13,7 @@ import (
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	"github.com/ava-labs/avalanchego/utils/hashing"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
-	"github.com/ava-labs/avalanchego/vms/platformvm/teleporter"
+	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 
 	"github.com/ava-labs/xsvm/state"
 	"github.com/ava-labs/xsvm/tx"
@@ -85,7 +85,7 @@ func (t *Tx) Export(e *tx.Export) error {
 		return err
 	}
 
-	message, err := teleporter.NewUnsignedMessage(
+	message, err := warp.NewUnsignedMessage(
 		e.ChainID,
 		e.PeerChainID,
 		payload.Bytes(),
@@ -125,7 +125,7 @@ func (t *Tx) Import(i *tx.Import) error {
 		return errMissingBlockContext
 	}
 
-	message, err := teleporter.ParseMessage(i.Message)
+	message, err := warp.ParseMessage(i.Message)
 	if err != nil {
 		return err
 	}

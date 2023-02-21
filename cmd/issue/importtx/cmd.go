@@ -14,7 +14,7 @@ import (
 	"github.com/ava-labs/avalanchego/api/info"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
 	"github.com/ava-labs/avalanchego/utils/set"
-	"github.com/ava-labs/avalanchego/vms/platformvm/teleporter"
+	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 
 	"github.com/ava-labs/xsvm/api"
 	"github.com/ava-labs/xsvm/tx"
@@ -43,7 +43,7 @@ func importFunc(c *cobra.Command, args []string) error {
 	var (
 		// Note: here we assume the unsigned message is correct from the last
 		//       URI in sourceURIs. In practice this shouldn't be done.
-		unsignedMessage *teleporter.UnsignedMessage
+		unsignedMessage *warp.UnsignedMessage
 		// Note: assumes that sourceURIs are all of the validators of the subnet
 		//       and that they do not share public keys.
 		signatures = make([]*bls.Signature, len(config.SourceURIs))
@@ -84,7 +84,7 @@ func importFunc(c *cobra.Command, args []string) error {
 	for i := range signatures {
 		signers.Add(i)
 	}
-	signature := &teleporter.BitSetSignature{
+	signature := &warp.BitSetSignature{
 		Signers: signers.Bytes(),
 	}
 
@@ -96,7 +96,7 @@ func importFunc(c *cobra.Command, args []string) error {
 	aggSignatureBytes := bls.SignatureToBytes(aggSignature)
 	copy(signature.Signature[:], aggSignatureBytes)
 
-	message, err := teleporter.NewMessage(
+	message, err := warp.NewMessage(
 		unsignedMessage,
 		signature,
 	)

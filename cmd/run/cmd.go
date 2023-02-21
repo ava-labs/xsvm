@@ -4,6 +4,8 @@
 package run
 
 import (
+	"context"
+
 	"github.com/spf13/cobra"
 
 	"github.com/ava-labs/avalanchego/vms/rpcchainvm"
@@ -20,6 +22,5 @@ func Command() *cobra.Command {
 }
 
 func runFunc(*cobra.Command, []string) error {
-	rpcchainvm.Serve(&xsvm.VM{})
-	return nil
+	return rpcchainvm.Serve(context.Background(), &xsvm.VM{})
 }
