@@ -9,6 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 	"github.com/ava-labs/avalanchego/wallet/subnet/primary"
 	"github.com/ava-labs/avalanchego/wallet/subnet/primary/common"
@@ -41,7 +42,12 @@ func createFunc(c *cobra.Command, args []string) error {
 	// NewWalletFromURI fetches the available UTXOs owned by [kc] on the network
 	// that [uri] is hosting.
 	walletSyncStartTime := time.Now()
-	wallet, err := primary.NewWalletWithTxs(ctx, config.URI, kc, config.SubnetID)
+	wallet, err := primary.MakeWallet(ctx, &primary.WalletConfig{
+		URI:              config.URI,
+		AVAXKeychain:     kc,
+		EthKeychain:      kc,
+		PChainTxsToFetch: set.Of(config.SubnetID),
+	})
 	if err != nil {
 		return err
 	}
