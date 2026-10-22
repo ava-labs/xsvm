@@ -1,4 +1,5 @@
 # ref. https://goreleaser.com/customization/build/
+version: 2
 builds:
   - id: xsvm
     main: ./cmd/xsvm
