@@ -59,7 +59,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --rm-dist
+          args: release --clean ${{ !startsWith(github.ref, 'refs/tags/') && '--snapshot' || '' }}
           workdir: ./xsvm/
         env:
           # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret
